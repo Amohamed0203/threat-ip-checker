@@ -3,8 +3,6 @@
 """
 threat_lookup.py
 
-requirements: requests, 
-
 Will allow user to input an IP, and will return the reputation of the IP
 Author: Ahmed
 """
@@ -17,6 +15,19 @@ import argparse
 
 # Load variables from .env into the environment
 load_dotenv()
+
+def request_from_user():
+    # parser object
+    parser = argparse.ArgumentParser(
+    description = "This will collect the IP from the user"
+    )
+
+    # setting parameters for what is needed from user
+    parser.add_argument("-i", "--ip", metavar = "ip", required = True, help = "Input and IP")
+
+    args = parser.parse_args()
+
+    return args.ip
 
 def request_to_abuse_ipdb(ip):
     # Defining the api-endpoint
@@ -57,17 +68,6 @@ def print_results(decodedResponse):
     print()
 
     print('***' * 5)
-
-def request_from_user():
-    parser = argparse.ArgumentParser(
-    description = "This will collect the IP from the user"
-    )
-
-    parser.add_argument("-i", "--ip", metavar = "ip", required = True, help = "Input and IP")
-
-    args = parser.parse_args()
-
-    return args.ip
 
 requested_ip = str(request_from_user())
 decodedResponse = request_to_abuse_ipdb(requested_ip)
