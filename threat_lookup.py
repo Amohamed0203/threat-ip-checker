@@ -16,7 +16,6 @@ from dotenv import load_dotenv
 
 # Load variables from .env into the environment
 load_dotenv()
-print(os.getenv('ABUSEIPDB_API_KEY'))
 
 # Defining the api-endpoint
 url = 'https://api.abuseipdb.com/api/v2/check'
