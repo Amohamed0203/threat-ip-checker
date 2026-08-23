@@ -13,30 +13,34 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+import argparse
 
 # Load variables from .env into the environment
 load_dotenv()
 
-# Defining the api-endpoint
-url = 'https://api.abuseipdb.com/api/v2/check'
+def request_to_abuse_ipdb(ip):
+    # Defining the api-endpoint
+    url = 'https://api.abuseipdb.com/api/v2/check'
 
-# This sets the parameters for the request
-querystring = {
-    'ipAddress': '180.153.236.223',
-    'maxAgeInDays': '90'
-}
+    # This sets the parameters for the request
+    querystring = {
+        'ipAddress': ip,
+        'maxAgeInDays': '90'
+    }
 
-# Header for the URL
-headers = {
-    'Accept': 'application/json',
-    'Key': os.getenv('ABUSEIPDB_API_KEY')
-}
+    # Header for the URL
+    headers = {
+        'Accept': 'application/json',
+        'Key': os.getenv('ABUSEIPDB_API_KEY')
+    }
 
-# The code actually requesting the data from the resource (Abuse IPDB)
-response = requests.request(method='GET', url=url, headers=headers, params=querystring)
+    # The code actually requesting the data from the resource (Abuse IPDB)
+    response = requests.request(method='GET', url=url, headers=headers, params=querystring)
 
-# Formatted output
-decodedResponse = json.loads(response.text)
+    # Formatted output
+    decodedResponse = json.loads(response.text)
+
+    return decodedResponse
 
 # Instructs how to display the data
 def print_results(decodedResponse):
@@ -54,4 +58,17 @@ def print_results(decodedResponse):
 
     print('***' * 5)
 
+def request_from_user():
+    parser = argparse.ArgumentParser(
+    description = "This will collect the IP from the user"
+    )
+
+    parser.add_argument("-i", "--ip", metavar = "ip", required = True, help = "Input and IP")
+
+    args = parser.parse_args()
+
+    return args.ip
+
+requested_ip = str(request_from_user())
+decodedResponse = request_to_abuse_ipdb(requested_ip)
 print_results(decodedResponse)
