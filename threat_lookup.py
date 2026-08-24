@@ -12,9 +12,18 @@ import json
 import os
 from dotenv import load_dotenv
 import argparse
+import ipaddress
 
 # Load variables from .env into the environment
 load_dotenv()
+
+def ip_validation(ip):
+    try:
+        ipaddress.ip_address(ip)
+        return True
+    except ValueError:
+        return False
+
 
 def request_from_user():
     # parser object
@@ -70,5 +79,9 @@ def print_results(decodedResponse):
     print('***' * 5)
 
 requested_ip = str(request_from_user())
-decodedResponse = request_to_abuse_ipdb(requested_ip)
-print_results(decodedResponse)
+
+if ip_validation(requested_ip):
+    decodedResponse = request_to_abuse_ipdb(requested_ip)
+    print_results(decodedResponse)
+else:
+    print("IP format must be valid!")
