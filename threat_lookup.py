@@ -17,6 +17,7 @@ import ipaddress
 # Load variables from .env into the environment
 load_dotenv()
 
+# IP format validation
 def ip_validation(ip):
     try:
         ipaddress.ip_address(ip)
@@ -61,6 +62,7 @@ def request_to_abuse_ipdb(ip):
     decodedResponse = json.loads(response.text)
 
     return decodedResponse
+
 
 # Instructs how to display the data
 def print_results(decodedResponse):
