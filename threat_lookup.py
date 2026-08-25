@@ -54,9 +54,20 @@ def request_to_abuse_ipdb(ip):
         'Accept': 'application/json',
         'Key': os.getenv('ABUSEIPDB_API_KEY')
     }
-
+    
     # The code actually requesting the data from the resource (Abuse IPDB)
     response = requests.request(method='GET', url=url, headers=headers, params=querystring)
+
+    if response.status_code == 401:
+        print('\nAuthentication failed. Your API key is either missing, incorrect, or revoked.')
+        return None
+    elif response.status_code == 429:
+        print('\nRate limit exceeded. Try again later.')
+        return None
+    elif response.status_code != 200:
+        print(f'\nUnexpected error: HTTP {response.status_code}')
+        return None
+
 
     # Formatted output
     decodedResponse = json.loads(response.text)
@@ -84,6 +95,7 @@ requested_ip = str(request_from_user())
 
 if ip_validation(requested_ip):
     decodedResponse = request_to_abuse_ipdb(requested_ip)
-    print_results(decodedResponse)
+    if decodedResponse != None:
+        print_results(decodedResponse)
 else:
     print("IP format must be valid!")
