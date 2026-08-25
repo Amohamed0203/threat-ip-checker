@@ -7,6 +7,7 @@ A Python CLI tool that checks IP addresses against AbuseIPDB to flag known malic
 - Validates IP address format before making any API calls
 - Queries the AbuseIPDB API for real-time IP reputation data
 - Displays abuse confidence score, country, and total reports for a given IP
+- Detects and reports API errors (invalid/missing key, rate limiting, etc.) instead of crashing
 
 ## Requirements
 
