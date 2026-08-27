@@ -22,17 +22,17 @@ def request_to_abuse_ipdb(ip):
     response = requests.request(method='GET', url=url, headers=headers, params=querystring)
 
     if response.status_code == 401:
-        print('\nAuthentication failed. Your API key is either missing, incorrect, or revoked.')
+        print('\nNotice:\nAuthentication failed for AbuseIPDB. Your API key is either missing, incorrect, or revoked.')
         return None
     elif response.status_code == 429:
-        print('\nRate limit exceeded. Try again later.')
+        print('\nNotice:\nRate limit exceeded for AbuseIPDB.')
         return None
     elif response.status_code != 200:
-        print(f'\nUnexpected error: HTTP {response.status_code}')
+        print(f'\nNotice:\nUnexpected error from AbuseIPDB: HTTP {response.status_code}')
         return None
 
 
     # Formatted output
-    decodedResponse = json.loads(response.text)
+    abuse_ipdb_response = json.loads(response.text)
 
-    return decodedResponse
+    return abuse_ipdb_response

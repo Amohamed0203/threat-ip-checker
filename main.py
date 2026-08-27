@@ -5,6 +5,7 @@ import argparse
 load_dotenv()
 
 from sources.abuseipdb import request_to_abuse_ipdb
+from sources.greynoise import request_to_grey_noise
 from report import print_results
 from utils import ip_validation
 
@@ -24,8 +25,9 @@ def request_from_user():
 requested_ip = str(request_from_user())
 
 if ip_validation(requested_ip):
-    decodedResponse = request_to_abuse_ipdb(requested_ip)
-    if decodedResponse != None:
-        print_results(decodedResponse)
+    abuse_ipdb_response = request_to_abuse_ipdb(requested_ip)
+    grey_noise_response = request_to_grey_noise(requested_ip)
+    if abuse_ipdb_response != None:
+        print_results(abuse_ipdb_response, grey_noise_response)
 else:
     print("IP format must be valid!")
